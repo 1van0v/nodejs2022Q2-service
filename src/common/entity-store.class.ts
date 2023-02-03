@@ -27,6 +27,16 @@ export class EntityStore<Entity extends BaseEntity> {
     delete this.items[id];
   }
 
+  updateWhere(query: Partial<Record<keyof Entity, any>>, update: Partial<Entity>): void {
+    const [key] = Object.keys(query);
+    this.ids.forEach((id) => {
+      const item = this.items[id];
+      if (item[key] === query[key]) {
+        this.updateItem(id, update);
+      }
+    });
+  }
+
   protected updateItem(id: string, updates: Partial<Entity>): Entity | undefined {
     const item = this.getItem(id);
 
