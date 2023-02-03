@@ -11,7 +11,7 @@ export class ArtistsService extends EntityStore<Artist> {
     return this.add(new Artist(createArtistDto));
   }
 
-  override update(id: string, updateArtistDto: UpdateArtistDto) {
-    return super.update(id, updateArtistDto);
+  update(id: string, updateArtistDto: UpdateArtistDto) {
+    return this.updateItem(id, updateArtistDto);
   }
 }

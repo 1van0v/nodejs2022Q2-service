@@ -27,7 +27,7 @@ export class EntityStore<Entity extends BaseEntity> {
     delete this.items[id];
   }
 
-  update(id: string, updates: Partial<Entity>): Entity | undefined {
+  protected updateItem(id: string, updates: Partial<Entity>): Entity | undefined {
     const item = this.getItem(id);
 
     return Object.assign(item, updates);
