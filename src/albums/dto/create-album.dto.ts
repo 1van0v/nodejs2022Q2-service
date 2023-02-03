@@ -1,4 +1,4 @@
-import { IsNumber, IsString, MinLength } from 'class-validator';
+import { IsNumber, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateAlbumDto {
   @IsString()
@@ -7,5 +7,7 @@ export class CreateAlbumDto {
 
   @IsNumber()
   year: number;
+
+  @IsUUID()
   artistId: string | null; // refers to Artist
 }
