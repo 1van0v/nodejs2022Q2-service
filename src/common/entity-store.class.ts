@@ -4,8 +4,8 @@ import * as uuid from 'uuid';
 import { BaseEntity } from './base.entity';
 
 export class EntityStore<Entity extends BaseEntity> {
-  protected ids: string[] = [];
-  protected items: Record<string, Entity> = {};
+  private ids: string[] = [];
+  private items: Record<string, Entity> = {};
 
   add(entity: Entity): Entity {
     this.items[entity.id] = entity;
@@ -43,7 +43,7 @@ export class EntityStore<Entity extends BaseEntity> {
     return Object.assign(item, updates);
   }
 
-  private getItem(id: string): Entity {
+  protected getItem(id: string): Entity {
     if (!uuid.validate(id)) {
       throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
     }

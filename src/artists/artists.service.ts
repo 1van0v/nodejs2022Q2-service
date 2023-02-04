@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
 import { TracksService } from '../tracks/tracks.service';
-import { EntityStore } from '../common/entity-store.class';
+import { FavorableEntityStore } from '../common/favorable-entity-store.class';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
 
 @Injectable()
-export class ArtistsService extends EntityStore<Artist> {
+export class ArtistsService extends FavorableEntityStore<Artist> {
   constructor(private tracksService: TracksService) {
     super();
   }
