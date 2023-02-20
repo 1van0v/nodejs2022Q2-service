@@ -1,0 +1,30 @@
+services:
+  server:
+    image: rss-app-nest
+    environment:
+      PORT: ${PORT}
+      DB_URL: db
+    depends_on:
+      - db
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - type: bind
+        source: ./src
+        target: /usr/src/app/src
+    command: npm run migrate:start:dev
+  db:
+    image: rss-postgres
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      PGPORT: ${DB_PORT}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+volumes:
+  db-data:
