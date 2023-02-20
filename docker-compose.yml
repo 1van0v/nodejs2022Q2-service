@@ -1,0 +1,24 @@
+services:
+  server:
+    image: rss-app-nest
+    environment:
+      PORT: ${PORT}
+      DB_URL: db
+    depends_on:
+      - db
+    ports:
+      - ${PORT}:${PORT}
+  db:
+    image: rss-postgres
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    environment:
+      PGPORT: ${DB_PORT}
+      PGUSER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+volumes:
+  db-data:
