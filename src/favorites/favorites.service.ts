@@ -9,7 +9,7 @@ export class FavoritesService {
   constructor(private tracksService: TracksService, private albumsService: AlbumsService, private artistsService: ArtistsService) {}
 
   findAll() {
-    const artists = this.artistsService.getFavorite();
+    const artists = []; //this.artistsService.getFavorite();
     const albums = this.albumsService.getFavorite();
     const tracks = this.tracksService.getFavorite();
     return { artists, albums, tracks };
@@ -19,8 +19,8 @@ export class FavoritesService {
     this.tracksService.removeFromFavorite(id);
   }
 
-  removeArtistFromFavorite(id: string): void {
-    this.artistsService.removeFromFavorite(id);
+  removeArtistFromFavorite(_id: string): void {
+    // this.artistsService.removeFromFavorite(id);
   }
 
   removeAlbumFromFavorite(id: string): void {
@@ -31,8 +31,8 @@ export class FavoritesService {
     this.tracksService.addToFavorite(id);
   }
 
-  addArtistToFavorite(id: string): void {
-    this.artistsService.addToFavorite(id);
+  addArtistToFavorite(_id: string): void {
+    // this.artistsService.addToFavorite(id);
   }
 
   addAlbumToFavorite(id: string): void {

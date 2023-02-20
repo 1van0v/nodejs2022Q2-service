@@ -1,9 +1,24 @@
-import { BaseEntity } from '../../common/base.entity';
+import { Exclude } from 'class-transformer';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
 
-export class User extends BaseEntity {
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ nullable: false, type: 'varchar' })
   login: string;
+
+  @Column({ nullable: false, type: 'varchar' })
+  @Exclude()
   password: string;
+
+  @VersionColumn()
   version = 1;
-  createdAt: number; // timestamp of creation
-  updatedAt: number; // timestamp of last update
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: number;
 }

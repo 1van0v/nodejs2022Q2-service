@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Res, HttpStatus, Response, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Put, HttpStatus, HttpCode, UseInterceptors } from '@nestjs/common';
+import { NotFoundInterceptor } from 'src/common/not-found.interceptor';
+import { Uuid } from '../common/uuid.decorator';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
@@ -18,18 +20,21 @@ export class ArtistsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @UseInterceptors(NotFoundInterceptor)
+  findOne(@Uuid() id: string) {
     return this.artistsService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
+  @UseInterceptors(NotFoundInterceptor)
+  update(@Uuid() id: string, @Body() updateArtistDto: UpdateArtistDto) {
     return this.artistsService.update(id, updateArtistDto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @UseInterceptors(NotFoundInterceptor)
+  remove(@Uuid() id: string) {
     return this.artistsService.remove(id);
   }
 }

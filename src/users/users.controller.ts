@@ -1,44 +1,42 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, HttpCode, HttpStatus, Put, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { HidePwdInterceptor } from './users.interceptor';
+import { Uuid } from '../common/uuid.decorator';
+import { NotFoundInterceptor } from '../common/not-found.interceptor';
 
 @Controller('user')
+@UseInterceptors(HidePwdInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    const created = this.usersService.create(createUserDto);
-    return this.hidePwd(created);
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
   findAll() {
-    return this.usersService.findAll().map((i) => this.hidePwd(i));
+    return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const user = this.usersService.findOne(id);
-    return this.hidePwd(user);
+  @UseInterceptors(NotFoundInterceptor)
+  findOne(@Uuid() id: string) {
+    return this.usersService.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const updated = this.usersService.update(id, updateUserDto);
-    return this.hidePwd(updated);
+  @UseInterceptors(NotFoundInterceptor)
+  update(@Uuid() id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(id, updateUserDto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @UseInterceptors(NotFoundInterceptor)
+  remove(@Uuid() id: string) {
     return this.usersService.remove(id);
-  }
-
-  private hidePwd(user: User): Omit<User, 'password'> {
-    const { password: _, ...usr } = user;
-    return usr;
   }
 }

@@ -1,13 +1,13 @@
-import { BaseEntity } from '../../common/base.entity';
-import { CreateArtistDto } from '../dto/create-artist.dto';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export class Artist extends BaseEntity {
+@Entity()
+export class Artist {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
   name: string;
-  grammy: boolean;
 
-  constructor({ name, grammy }: CreateArtistDto) {
-    super();
-    this.name = name;
-    this.grammy = grammy;
-  }
+  @Column({ default: false })
+  grammy: boolean;
 }
